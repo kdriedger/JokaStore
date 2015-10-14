@@ -3,7 +3,7 @@
 <div class="row">
     <div class="span6 left_sidebar">
         <h3 class="product_title" style="float: left;"> {{ tshirt.title }} </h3>
-        <h3 style="float: right;"><span class="WebRupee">Rs.</span> 325 </h3>
+        <h3 style="float: right;"> $ {{tshirt.price}} </h3>
         <img class="main_img" data-tshirt_id="{{tshirt.tshirt_id}}" src="/static/img/{{ tshirt.tshirt_id }}.jpg" />
         <p> {{ tshirt.content | safe}} </p>
     </div>
@@ -22,6 +22,7 @@
                          <a href="http://esparsha.com/docs/size_chart.pdf" target="_blank" title="Download Size Chart"><i class="icon-download-alt"></i></a>
                 </div>
                 <div class="add_to_cart">
+                    <!-- Look in js/application.js for the real function -->
                     <a href="/cart" class = "btn btn-primary btn-large cart_btn">Add this to Cart!</a>
                 </div>
                 <div id="addition_details">
