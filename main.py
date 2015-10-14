@@ -1,4 +1,4 @@
-import os
+﻿import os
 import sys
 import webapp2
 import json
@@ -75,7 +75,8 @@ def get_tshirts(update = False):
     key = "tee"
     tshirts = memcache.get(key)
     if tshirts is None or update:
-        logging.error("DB QUERY FOR TSHIRTS")
+        #logging.error("DB QUERY FOR TSHIRTS")
+        logging.info("DB query for TShirts, eh")
         tshirts = db.GqlQuery("SELECT * FROM Tshirt ORDER BY tshirt_id")
         tshirts = list(tshirts)
         memcache.set(key, tshirts)
@@ -203,6 +204,18 @@ class DoneHandler(Handler):
         self.write("Your order has been recorded. You shortly hear from us regarding payment and delivery details. Thanks for ordering. <a href='/'>Continue shopping</a>")
         
 ### ADMIN FUNCTIONS ### - Not protected currently
+
+class InitializeDatabase(Handler):
+    def get(self):
+        self.response.write('Starting to initialize the database')
+        for i in range(1,10):
+            first_t = Tshirt(title='Nice black shirt '+ `i`, tshirt_id = i)
+            first_t.price = 12 + i
+            first_t.save()
+
+        self.response.write('Done init db')
+
+
 class AddItemHandler(Handler):
     def get(self):
         self.render("items_form.html")
@@ -256,6 +269,7 @@ class ListOrdersHandler(Handler):
         self.render("list_orders.html", orders = orders)
 
 app = webapp2.WSGIApplication([('/', MainPage),
+                               ('/initdb', InitializeDatabase),
                                ('/logout', LogoutHandler),
                                ('/login', LoginHandler), 
                                ('/item/add', AddItemHandler), 
