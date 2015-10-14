@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0d445b5f-6a00-4a89-a023-496fd882a02d}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>C:\Program Files\Google\Cloud SDK\google-cloud-sdk\lib\googlecloudsdk\gcloud\gcloud.py</StartupFile>
+    <SearchPath>.;C:\Program Files (x86)\Google\google_appengine\;C:\Program Files (x86)\Google\google_appengine\lib\;C:\Program Files (x86)\Google\google_appengine\lib\webapp2-2.5.2\;C:\Program Files (x86)\Google\google_appengine\lib\jinja2-2.6\</SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+    <InterpreterVersion />
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <CommandLineArguments>preview app run app.yaml --python-startup-script "pydevd_startup.py" --max-module-instances="default:1"</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="main.py" />
+    <Compile Include="pydevd_startup.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.yaml" />
+    <Content Include="js\application.js" />
+    <Content Include="js\jquery.js" />
+    <Content Include="static\favicon.ico" />
+    <Content Include="static\glyphicons-halflings.png" />
+    <Content Include="static\img\1.jpg" />
+    <Content Include="static\img\2.jpg" />
+    <Content Include="static\img\3.jpg" />
+    <Content Include="static\img\4.jpg" />
+    <Content Include="static\img\5.jpg" />
+    <Content Include="static\img\6.jpg" />
+    <Content Include="static\img\7.jpg" />
+    <Content Include="static\img\8.jpg" />
+    <Content Include="static\logo.png" />
+    <Content Include="static\purty_wood.jpg" />
+    <Content Include="stylesheets\bootstrap.min.css" />
+    <Content Include="stylesheets\custom.css" />
+    <Content Include="templates\about.html" />
+    <Content Include="templates\base.html" />
+    <Content Include="templates\items_form.html" />
+    <Content Include="templates\list_orders.html" />
+    <Content Include="templates\main.html" />
+    <Content Include="templates\main2.html" />
+    <Content Include="templates\show_cart.html" />
+    <Content Include="templates\show_tshirt.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="js" />
+    <Folder Include="static" />
+    <Folder Include="static\img" />
+    <Folder Include="stylesheets" />
+    <Folder Include="templates" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>
