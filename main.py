@@ -49,8 +49,8 @@ class Handler(webapp2.RequestHandler):
         """ Fetches items from sessions cart"""
         item_list = []
         cart_count = self.session.get('add_to_cart_count')
-        if not cart_count: return None;
-        for i in range(1, cart_count+1):
+        if not cart_count: return None
+        for i in range(1, cart_count + 1):
             item = self.session.get(str(i))
             if item:
                 item_list.append(item)
@@ -71,7 +71,7 @@ class Order(db.Model):
     time_of_order = db.DateTimeProperty(auto_now_add = True)
 
 ### CACHING ###
-def get_tshirts(update = False):
+def get_tshirts(update=False):
     key = "tee"
     tshirts = memcache.get(key)
     if tshirts is None or update:
@@ -82,7 +82,7 @@ def get_tshirts(update = False):
         memcache.set(key, tshirts)
     return tshirts
 
-def get_one_tshirt(item_id, update = False):
+def get_one_tshirt(item_id, update=False):
     key = item_id 
     tshirt = memcache.get(key)
     if tshirt is None or update:
@@ -155,7 +155,13 @@ class AddToCartHandler(Handler):
             item_title = self.request.get("item_title")
             qty = self.request.get("qty")
             size = self.request.get("size")
-            price = 325
+            price = 20
+            tshirts = db.GqlQuery("select * from Tshirt where tshirt_id=:1", int(tshirt_id))
+            if tshirts.count() == 1:
+                price = tshirts[0].price
+            else:
+                logging.error('Cannot find tshirt: %s in database', item_title)
+
             get_current_add_count += 1
             self.session[get_current_add_count] = { "qty" : qty, "size" : size ,
                                                     "item_title": item_title, 
@@ -204,12 +210,11 @@ class DoneHandler(Handler):
         self.write("Your order has been recorded. You shortly hear from us regarding payment and delivery details. Thanks for ordering. <a href='/'>Continue shopping</a>")
         
 ### ADMIN FUNCTIONS ### - Not protected currently
-
 class InitializeDatabase(Handler):
     def get(self):
         self.response.write('Starting to initialize the database')
         for i in range(1,10):
-            first_t = Tshirt(title='Nice black shirt '+ `i`, tshirt_id = i)
+            first_t = Tshirt(title='Nice black shirt ' + `i`, tshirt_id = i)
             first_t.price = 12 + i
             first_t.save()
 
