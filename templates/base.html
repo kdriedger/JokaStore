@@ -47,7 +47,7 @@
         </ul>
         <ul class="nav pull-right login_list">
             {% if not logged_in %}
-                <li><a href="/login">Login with Gmail</a></li>
+                <li><a href="/login">Login</a></li>
             {% else %}
             <li><a href="/logout">Logout ( {{ logged_in.nickname()}} )</a></li>
             {% endif %}
