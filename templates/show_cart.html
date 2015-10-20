@@ -16,7 +16,7 @@
         <tbody>
         {% for item in item_list %}
           <tr>
-            <td>{{ item["item_title"] }}</td>
+            <td><a href="/tshirt/{{ item["tshirt_id"] }}"> {{ item["item_title"] }} </a> <br/> <a href="/cart/remove/{{ item["id"] }}">delete</a></td>
             <td>{{ item["qty"] }} </td>
             <td>{{ item["size"] }}</td>
             <td>{{ item["cost"] }}</td>

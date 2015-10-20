@@ -49,7 +49,7 @@ class Handler(webapp2.RequestHandler):
         """ Fetches items from sessions cart"""
         item_list = []
         cart_count = self.session.get('add_to_cart_count')
-        if not cart_count: return None
+        if not cart_count: return item_list
         for i in range(1, cart_count + 1):
             item = self.session.get(str(i))
             if item:
@@ -146,6 +146,22 @@ class LogoutHandler(Handler):
         self.response.headers.add_header('Set-Cookie', 'session=; Path=/')
         self.redirect(users.create_logout_url('/'))
 
+class RemoveFromCartHandler(Handler):
+    def get(self, item_id):
+        if users.get_current_user():
+            self.response.headers['Content-type'] = 'application/json'
+            get_current_add_count = int(self.session.get('add_to_cart_count'))
+            remove_index = item_id #self.request.get("remove_index")
+            item = self.session[remove_index]
+            get_current_add_count -= 1
+            self.session["add_to_cart_count"] = get_current_add_count
+            qty = item["qty"]
+            current_cart_items = int(self.session.get("item_count"))
+            updated_cart_items = current_cart_items - int(qty)
+            self.session["item_count"] = updated_cart_items
+            del self.session[remove_index]
+        self.redirect('/cart')
+
 class AddToCartHandler(Handler):
     def get(self):
         if users.get_current_user():
@@ -157,13 +173,14 @@ class AddToCartHandler(Handler):
             size = self.request.get("size")
             price = 20
             tshirts = db.GqlQuery("select * from Tshirt where tshirt_id=:1", int(tshirt_id))
-            if tshirts.count() == 1:
+            if tshirts.count() > 0:
                 price = tshirts[0].price
             else:
                 logging.error('Cannot find tshirt: %s in database', item_title)
 
             get_current_add_count += 1
-            self.session[get_current_add_count] = { "qty" : qty, "size" : size ,
+            self.session[get_current_add_count] = { "id" : get_current_add_count, 
+                                                    "qty" : qty, "size" : size ,
                                                     "item_title": item_title, 
                                                     "tshirt_id" : tshirt_id,
                                                     "cost" : price * int(qty)}
@@ -286,6 +303,7 @@ app = webapp2.WSGIApplication([('/', MainPage),
                                ('/item/add', AddItemHandler), 
                                ('/item/edit', EditItemHandler), 
                                ('/cart/add', AddToCartHandler),
+                               ('/cart/remove/(\d+)', RemoveFromCartHandler),
                                ('/about', AboutHandler),
                                ('/done', DoneHandler),
                                ('/mainpage', MainPage),
