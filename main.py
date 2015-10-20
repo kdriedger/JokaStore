@@ -180,7 +180,13 @@ class AddToCartHandler(Handler):
 class CartHandler(Handler):
     def get(self):
         item_list = self.get_items_from_cart()
-        self.render('show_cart.html', item_list = item_list)
+        qty_total = 0
+        cost_total = 0
+        for i in item_list:
+            qty_total += int(i["qty"])
+            cost_total += int(i["cost"])
+
+        self.render('show_cart.html', item_list = item_list, qty_total = qty_total, cost_total = cost_total)
 
 class CheckoutHandler(Handler):
     def get(self):
